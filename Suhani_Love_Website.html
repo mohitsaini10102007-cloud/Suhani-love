@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Suhani ❤️</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    overflow:hidden; font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ffd6e7,#fff0f6,#ffd1dc);
+    color:#5a1730;
+  }
+  .hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  .heart{position:absolute;bottom:-40px;font-size:24px;animation:float 7s linear infinite;opacity:.65}
+  @keyframes float{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+  .card{
+    width:min(92vw,430px); padding:34px 24px; text-align:center;
+    background:rgba(255,255,255,.72); backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.8); border-radius:28px;
+    box-shadow:0 18px 55px rgba(140,35,75,.18);
+    position:relative; z-index:2;
+  }
+  .emoji{font-size:48px;margin-bottom:8px}
+  h1{font-size:28px;margin:8px 0 12px}
+  p{font-size:18px;line-height:1.5;margin:0 0 25px}
+  .buttons{display:flex;justify-content:center;gap:16px;min-height:54px}
+  button{
+    border:0;border-radius:999px;padding:14px 28px;font-size:17px;font-weight:700;
+    cursor:pointer;transition:.2s;box-shadow:0 8px 20px rgba(120,20,60,.15)
+  }
+  #yes{background:#ff4f87;color:white}
+  #no{background:#fff;color:#9b3157;border:2px solid #ffb4c9}
+  button:active{transform:scale(.94)}
+  .hidden{display:none}
+  .final{font-size:22px;font-weight:700}
+  .small{font-size:14px;opacity:.65;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+
+<div class="card" id="card">
+  <div class="emoji">💗</div>
+  <h1 id="title">Suhani, Do you love me? 🥺</h1>
+  <p id="message">Ek baar dil se soch ke answer dena ❤️</p>
+  <div class="buttons" id="buttons">
+    <button id="yes">Yes ❤️</button>
+    <button id="no">No 🙈</button>
+  </div>
+  <div class="small" id="count"></div>
+</div>
+
+<script>
+const messages = [
+  "Phir se soch lo 🥺❤️",
+  "Itni jaldi NO? 😭",
+  "Ek baar aur dil se soch lo 💗",
+  "Mujhe lagta hai tumne galti se NO dabaya 😭",
+  "Suhani, answer change karne ka chance hai 😌",
+  "Sach mein NO? Thoda aur soch lo 🥹",
+  "Dil ki baat sun lo ❤️",
+  "Aisa mat karo, mera dil tod dogi 🥺",
+  "Last se pehle ek aur chance 😭💕",
+  "Ab toh YES kar do na, jaan ❤️"
+];
+
+let noCount = 0;
+let runaway = false;
+
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+const buttons = document.getElementById("buttons");
+const count = document.getElementById("count");
+
+function sayYes(){
+  title.textContent = "Yahh! Mujhe pehle se pata tha 😌❤️";
+  message.textContent = "I love you jaan 🫶💕";
+  buttons.innerHTML = '<div class="final">💖 You & Me Forever 💖</div>';
+  count.textContent = "";
+}
+
+yes.addEventListener("click", sayYes);
+
+no.addEventListener("click", () => {
+  if (runaway) return;
+  noCount++;
+
+  if(noCount <= 10){
+    message.textContent = messages[noCount-1];
+    count.textContent = `NO attempts: ${noCount}/10 😭`;
+  }
+
+  if(noCount >= 10){
+    runaway = true;
+    message.textContent = "Ab NO mujhe accept nahi hai 😭❤️ YES kar do!";
+    count.textContent = "";
+    no.style.position = "fixed";
+    no.style.zIndex = "10";
+
+    // First move immediately
+    moveNo();
+
+    // After 10th click, every attempt at the moving button makes it escape again.
+    no.addEventListener("mouseenter", moveNo);
+    no.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
+    no.addEventListener("click", moveNo);
+  }
+});
+
+function moveNo(){
+  const pad = 18;
+  const w = no.offsetWidth || 110, h = no.offsetHeight || 52;
+  const maxX = Math.max(pad, innerWidth-w-pad);
+  const maxY = Math.max(pad, innerHeight-h-pad);
+  no.style.left = (Math.random()*maxX) + "px";
+  no.style.top = (Math.random()*maxY) + "px";
+}
+
+for(let i=0;i<18;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=["❤️","💗","💕","💖","✨"][i%5];
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDelay=(Math.random()*6)+"s";
+  h.style.animationDuration=(5+Math.random()*5)+"s";
+  document.getElementById("hearts").appendChild(h);
+}
+</script>
+</body>
+</html>
